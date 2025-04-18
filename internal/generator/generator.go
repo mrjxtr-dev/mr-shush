@@ -6,27 +6,17 @@ import (
 	"fmt"
 	"math/big"
 
+	"github.com/mrjxtr-dev/mr-shush/internal/config"
 	"github.com/mrjxtr-dev/mr-shush/internal/models"
 )
 
-const (
-	defaultLength = 8
-	maxLength     = 50
-)
-
-var validStrength = map[string]struct{}{
-	"weak":   {},
-	"good":   {},
-	"strong": {},
-}
-
 type Generator struct {
-	password *models.Password
+	*models.Password
 }
 
 func New() *Generator {
 	return &Generator{
-		password: &models.Password{
+		&models.Password{
 			Lowercase: "abcdefghijklmnopqrstuvwxyz",
 			Uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 			Numbers:   "0123456789",
@@ -35,9 +25,10 @@ func New() *Generator {
 	}
 }
 
+// Generate a password based on length and strength
 func (g *Generator) GeneratePassword(length int, strength string) (string, error) {
 	if length <= 0 {
-		length = defaultLength
+		length = config.DefaultLength
 	}
 
 	if err := g.validateFlags(length, strength); err != nil {
@@ -53,13 +44,13 @@ func (g *Generator) GeneratePassword(length int, strength string) (string, error
 	return password, nil
 }
 
-// Validate and process flags before generating
+// Validate and process flags(length, strength) before generating
 func (g *Generator) validateFlags(length int, strength string) error {
-	if length > maxLength {
+	if length > config.MaxLength {
 		return errors.New("length must be less than 50")
 	}
 
-	if _, ok := validStrength[strength]; !ok {
+	if _, ok := config.ValidStrength[strength]; !ok {
 		return errors.New("invalid strength flag")
 	}
 
@@ -69,9 +60,9 @@ func (g *Generator) validateFlags(length int, strength string) error {
 // Build a charset based on strength (weak, good, strong)
 // Defaults to "good" if strength flag is not passed
 func (g *Generator) buildCharset(strength string) string {
-	weakCharset := g.password.Lowercase + g.password.Uppercase
-	goodCharset := weakCharset + g.password.Numbers
-	strongCharset := goodCharset + g.password.Symbols
+	weakCharset := g.Lowercase + g.Uppercase
+	goodCharset := weakCharset + g.Numbers
+	strongCharset := goodCharset + g.Symbols
 
 	var charset string
 
@@ -87,6 +78,7 @@ func (g *Generator) buildCharset(strength string) string {
 	return charset
 }
 
+// Build a password based on charset and length
 func (g *Generator) buildPassword(charset string, length int) (string, error) {
 	password := make([]byte, length)
 
