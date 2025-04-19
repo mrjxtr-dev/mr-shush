@@ -1,10 +1,9 @@
 package main
 
 import (
-	_ "github.com/mrjxtr-dev/mr-shush/cmd/cli/generate"
-	"github.com/mrjxtr-dev/mr-shush/cmd/cli/root"
+	cmd "github.com/mrjxtr-dev/mr-shush/cmd/cli/commands"
 )
 
 func main() {
-	root.Execute()
+	cmd.Execute()
 }

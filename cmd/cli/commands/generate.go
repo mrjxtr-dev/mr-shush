@@ -1,10 +1,9 @@
-package generate
+package commands
 
 import (
 	"fmt"
 	"log"
 
-	"github.com/mrjxtr-dev/mr-shush/cmd/cli/root"
 	"github.com/mrjxtr-dev/mr-shush/internal/config"
 	"github.com/mrjxtr-dev/mr-shush/internal/generator"
 	"github.com/spf13/cobra"
@@ -17,7 +16,7 @@ var generateCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// Debug line to confirm command is running
 		fmt.Println("DEBUG: Generate command is running")
-		
+
 		length, strength, err := getFlagValues(cmd)
 		if err != nil {
 			log.Fatal(err)
@@ -32,8 +31,9 @@ var generateCmd = &cobra.Command{
 	},
 }
 
+// init adds the generate command to the root command
 func init() {
-	root.RootCmd.AddCommand(generateCmd)
+	rootCmd.AddCommand(generateCmd)
 
 	generateCmd.Flags().
 		BoolP("strong", "s", false, "Generate a strong password")
@@ -45,6 +45,7 @@ func init() {
 		IntP("length", "l", config.DefaultLength, "Length of the password")
 }
 
+// getFlagValues parses the flags and returns the length and strength of the password
 func getFlagValues(cmd *cobra.Command) (int, string, error) {
 	length, err := cmd.Flags().GetInt("length")
 	if err != nil {
