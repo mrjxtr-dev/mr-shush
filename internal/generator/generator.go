@@ -11,12 +11,12 @@ import (
 )
 
 type Generator struct {
-	*models.Password
+	*models.PasswordCharset
 }
 
 func New() *Generator {
 	return &Generator{
-		&models.Password{
+		&models.PasswordCharset{
 			Lowercase: "abcdefghijklmnopqrstuvwxyz",
 			Uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
 			Numbers:   "0123456789",
