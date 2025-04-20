@@ -9,6 +9,7 @@ _Your secrets are safe with me... shhh._
 ---
 
 ## ✨ What is mr-shush?
+
 **mr-shush** is a lightweight, offline-first password generator and secrets manager built with speed and simplicity in mind — all thanks to Go. Designed for developers, sysadmins, privacy-conscious users, and anyone who wants full control over their sensitive data without relying on the cloud.
 
 It's fast. It's secure. It's quiet.
@@ -56,14 +57,20 @@ go build -o mr-shush .
 # General format of commands
 mr-shush [command] [options] [arguments]
 
-# Generate a strong password
-mr-shush generate --length 10 --strong
+# Generate a password with defults `--length 8 --good`
+mr-shush generate
 
-# Generate a weak password
-mr-shush generate --length 10 --weak
+# Generate a strong password with 15 characters
+mr-shush generate --length 15 --strong
 
-# Generate and store a password
-mr-shush generate --length 10 --store --name github-password
+# Generate a good password with 12 characters
+mr-shush generate --length 12 --good
+
+# Generate a weak password with 8 characters
+mr-shush generate --length 8 --weak
+
+# Generate and store a password with the name "github"
+mr-shush generate --length 10 --store --name github
 
 # Store a password directly
 mr-shush store --name github-password --password supersecret123!
